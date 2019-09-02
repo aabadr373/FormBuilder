@@ -2,11 +2,16 @@ package com.example.formbuilder.pickers;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
 
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 
 import java.util.List;
 
@@ -27,6 +32,25 @@ public class FormSingleSelection {
 
     public void pickDialog() {
 
+
+
+        OptionsPickerView optionsPickerView =  new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+
+
+                selectedOption.setValue(options.get(options1));
+
+            }
+        }).build();
+
+        optionsPickerView.setPicker(options);
+
+        optionsPickerView.show();
+
+
+
+        /*
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("");
@@ -58,7 +82,7 @@ public class FormSingleSelection {
                 dialogInterface.dismiss();
             }
         });
-        builder.show();
+        builder.show(); */
     }
 
 

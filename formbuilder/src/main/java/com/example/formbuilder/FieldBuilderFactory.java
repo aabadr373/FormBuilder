@@ -1,8 +1,10 @@
 package com.example.formbuilder;
 
 import android.content.Context;
+
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
@@ -17,27 +20,36 @@ import com.example.formbuilder.pickers.FormDatePicker;
 import com.example.formbuilder.pickers.FormMulitpleSelection;
 import com.example.formbuilder.pickers.FormSingleSelection;
 import com.example.formbuilder.pickers.FormTimePicker;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 
-public class FieldBuilderFactory {
+ class FieldBuilderFactory {
     private Context context;
     private LifecycleOwner lifecycleOwner;
+    private FragmentManager fragmentManager;
 
 
-     FieldBuilderFactory(LifecycleOwner lifecycleOwner, LinearLayout linearLayout, Context context) {
+
+    FieldBuilderFactory(LifecycleOwner lifecycleOwner,Context context
+    , FragmentManager fragmentManager) {
 
 
         this.context = context;
         this.lifecycleOwner = lifecycleOwner;
+        this.fragmentManager = fragmentManager;
+
+
 
 
     }
 
 
-     View buildField(final FormField formField) {
+    View buildField(final FormField formField) {
+
+
 
         int layoutID = R.layout.form_field;
         FormField.Type type = formField.getType();
@@ -54,197 +66,200 @@ public class FieldBuilderFactory {
         View view = inflater.inflate(layoutID, new LinearLayout(context), true);
 
 
-        final EditText formFieldView = (EditText) view.findViewById(R.id.field_input);
-
-
         View view1 = view.findViewById(R.id.header_layout);
 
-        TextView textView = view1.findViewById(R.id.form_header_text);
+        TextView textView = view.findViewById(R.id.form_header_text);
 
         textView.setText(formField.getTag());
 
-        formFieldView.setEnabled(formField.isEnabled());
 
-        formFieldView.setText(formField.getValue());
+        final Object formFieldView = view.findViewById(R.id.field_input);
 
-        switch (type) {
 
+        if (formFieldView instanceof TextView) {
 
 
 
-            case TEXT:
+            ((TextView) formFieldView).setEnabled(formField.isEnabled());
 
-                formFieldView.setInputType(InputType.TYPE_CLASS_TEXT);
+            ((TextView) formFieldView).setText(formField.getValue());
 
+            switch (type) {
 
-                break;
 
+                case TEXT:
 
-            case EMAIL:
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_TEXT);
 
-                formFieldView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                break;
 
-            case PHONE:
+                    break;
 
 
-                formFieldView.setInputType(InputType.TYPE_CLASS_PHONE);
-                break;
+                case EMAIL:
 
-            case PASSWORD:
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    break;
 
-                formFieldView.setInputType(InputType.TYPE_CLASS_TEXT);
-                formFieldView.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                break;
+                case PHONE:
 
-            case NUMBER:
 
-                formFieldView.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_PHONE);
+                    break;
 
-                break;
-            case URL:
+                case PASSWORD:
 
-                formFieldView.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_TEXT);
+                    ((TextView) formFieldView).setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    break;
 
-                break;
+                case NUMBER:
 
-            case ZIP:
-                formFieldView.setInputType(InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_NUMBER);
 
-                break;
+                    break;
+                case URL:
 
-            case DATE:
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
 
-                final TextView dateTV = (EditText) view.findViewById(R.id.field_input);
+                    break;
 
-                dateTV.setFocusable(false);
-                dateTV.setClickable(true);
-                final FormDatePicker datePicker = new FormDatePicker(formField, context);
-                dateTV.setInputType(InputType.TYPE_CLASS_TEXT);
-                dateTV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                case ZIP:
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
 
+                    break;
 
-                        datePicker.pickDate();
-                    }
-                });
+                case DATE:
 
-                datePicker.getMutableLiveData().observe(lifecycleOwner, new Observer<Calendar>() {
-                    @Override
-                    public void onChanged(Calendar calendar) {
 
-                        SimpleDateFormat sdf = new SimpleDateFormat(formField.getDateFormat());
 
+                    ((TextView) formFieldView).setFocusable(false);
+                    ((TextView) formFieldView).setClickable(true);
+                    final FormDatePicker datePicker = new FormDatePicker(formField, context);
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_TEXT);
+                    ((TextView) formFieldView).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
-                        dateTV.setText(sdf.format(calendar.getTime()));
 
+                            datePicker.pickDate();
+                        }
+                    });
 
-                    }
-                });
+                    datePicker.getMutableLiveData().observe(lifecycleOwner, new Observer<Calendar>() {
+                        @Override
+                        public void onChanged(Calendar calendar) {
 
-                break;
+                            SimpleDateFormat sdf = new SimpleDateFormat(formField.getDateFormat());
 
 
-            case TIME:
-                final TextView timeTV = (EditText) view.findViewById(R.id.field_input);
+                            ((TextView) formFieldView).setText(sdf.format(calendar.getTime()));
 
-                timeTV.setFocusable(false);
-                timeTV.setClickable(true);
-                final FormTimePicker timePicker = new FormTimePicker(formField, context);
-                timeTV.setInputType(InputType.TYPE_CLASS_TEXT);
-                timeTV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
-                        timePicker.pickTime();
-                    }
-                });
+                        }
+                    });
 
+                    break;
 
-                timePicker.getTime().observe(lifecycleOwner, new Observer<Calendar>() {
-                    @Override
-                    public void onChanged(Calendar calendar) {
 
-                        SimpleDateFormat sdf = new SimpleDateFormat(formField.getTimeFormat());
-                        timeTV.setText(sdf.format(calendar.getTime()));
+                case TIME:
 
-                    }
-                });
 
+                    ((TextView) formFieldView).setFocusable(false);
+                    ((TextView) formFieldView).setClickable(true);
+                    final FormTimePicker timePicker = new FormTimePicker(formField, context);
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_TEXT);
+                    ((TextView) formFieldView).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
-                break;
+                            timePicker.pickTime();
+                        }
+                    });
 
-            case MULTIPLE_SELECTION:
 
-                final TextView multipleTV = (EditText) view.findViewById(R.id.field_input);
+                    timePicker.getTime().observe(lifecycleOwner, new Observer<Calendar>() {
+                        @Override
+                        public void onChanged(Calendar calendar) {
 
+                            SimpleDateFormat sdf = new SimpleDateFormat(formField.getTimeFormat());
+                            ((TextView) formFieldView).setText(sdf.format(calendar.getTime()));
 
-                multipleTV.setFocusable(false);
-                multipleTV.setClickable(true);
-                multipleTV.setInputType(InputType.TYPE_CLASS_TEXT);
+                        }
+                    });
 
 
-                final FormMulitpleSelection formMulitpleSelection = new FormMulitpleSelection(formField.getOptions(), context);
+                    break;
 
-                formFieldView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        formMulitpleSelection.pickMultipleDialog();
+                case MULTIPLE_SELECTION:
 
 
-                    }
-                });
 
 
-                formMulitpleSelection.getSelectedList().observe(lifecycleOwner, new Observer<List<String>>() {
-                    @Override
-                    public void onChanged(List<String> strings) {
+                    ((TextView) formFieldView).setFocusable(false);
+                    ((TextView) formFieldView).setClickable(true);
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_TEXT);
 
-                        multipleTV.setText(strings.toString());
-                    }
-                });
 
+                    final FormMulitpleSelection formMulitpleSelection = new FormMulitpleSelection(formField.getOptions(), context, fragmentManager);
 
-                break;
+                    ((TextView) formFieldView).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            formMulitpleSelection.pickMultipleDialog();
 
-            case SELECTION:
 
-                final TextView singleTV = (EditText) view.findViewById(R.id.field_input);
+                        }
+                    });
 
-                final FormSingleSelection formSingleSelection = new FormSingleSelection(formField.getOptions(), context);
 
-                singleTV.setFocusable(false);
-                singleTV.setClickable(true);
+                    formMulitpleSelection.getSelectedList().observe(lifecycleOwner, new Observer<List<String>>() {
+                        @Override
+                        public void onChanged(List<String> strings) {
 
-                singleTV.setInputType(InputType.TYPE_CLASS_TEXT);
+                            ((TextView) formFieldView).setText(strings.toString());
+                        }
+                    });
 
 
-                singleTV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        formSingleSelection.pickDialog();
+                    break;
 
-                    }
-                });
+                case SELECTION:
 
 
-                formSingleSelection.getSelectedOption().observe(lifecycleOwner, new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-                        singleTV.setText(s);
-                    }
-                });
 
+                    final FormSingleSelection formSingleSelection = new FormSingleSelection(formField.getOptions(), context);
 
-                break;
-            default:
+                    ((TextView) formFieldView).setFocusable(false);
+                    ((TextView) formFieldView).setClickable(true);
 
-                return null;
+                    ((TextView) formFieldView).setInputType(InputType.TYPE_CLASS_TEXT);
+
+
+                    ((TextView) formFieldView).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            formSingleSelection.pickDialog();
+
+                        }
+                    });
+
+
+                    formSingleSelection.getSelectedOption().observe(lifecycleOwner, new Observer<String>() {
+                        @Override
+                        public void onChanged(String s) {
+                            ((TextView) formFieldView).setText(s);
+                        }
+                    });
+
+
+                    break;
+                default:
+
+                    return null;
+
+            }
 
         }
-
-
         return view;
 
     }

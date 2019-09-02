@@ -5,9 +5,9 @@ import android.content.DialogInterface;
 
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 
 
 import java.util.ArrayList;
@@ -19,9 +19,12 @@ public class FormMulitpleSelection {
     private Context context;
     private ArrayList<String> selection;
     private MutableLiveData<List<String>> selectionList;
+    private FragmentManager fragmentManager;
 
 
-    public FormMulitpleSelection(List<String> opttions, Context context) {
+    public FormMulitpleSelection(List<String> opttions, Context context
+    , FragmentManager fragmentManager)
+    {
 
         this.context = context;
         this.opttions = opttions;
@@ -31,11 +34,17 @@ public class FormMulitpleSelection {
         }
 
 
+        this.fragmentManager =fragmentManager;
+
+
         selectionList = new MutableLiveData<>();
 
     }
 
     public void pickMultipleDialog() {
+
+
+
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -80,6 +89,9 @@ public class FormMulitpleSelection {
             }
         });
         builder.show();
+
+
+
     }
 
 

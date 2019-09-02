@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 
 
@@ -26,9 +27,9 @@ public class FormRepo {
     }
 
 
-    View buildElement(LifecycleOwner lifecycleOwner, LinearLayout linearLayout, final FormField formField) {
+    View buildElement(LifecycleOwner lifecycleOwner, final FormField formField, FragmentManager fragmentManager) {
 
-        FieldBuilderFactory fieldBuilderFactory = new FieldBuilderFactory(lifecycleOwner, linearLayout, context);
+        FieldBuilderFactory fieldBuilderFactory = new FieldBuilderFactory(lifecycleOwner,context, fragmentManager);
 
 
         return fieldBuilderFactory.buildField(formField);

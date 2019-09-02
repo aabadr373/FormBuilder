@@ -24,13 +24,28 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.myLinear);
 
 
-        final FormBuilder formBuilder = new FormBuilder(this, this, linearLayout);
+        final FormBuilder formBuilder = new FormBuilder(this, this,
+                linearLayout, getSupportFragmentManager());
 
 
         List<String> list = new ArrayList<>();
         list.add("a");
         list.add("b");
         list.add("c");
+        list.add("again");
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("again");
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("again");
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("again");
+
 
 
         formBuilder.addField("Text", FormField.Type.TEXT, true);
