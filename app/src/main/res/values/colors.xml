@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorPrimary">@color/sea_blue</color>
+    <color name="colorPrimaryDark">@color/dark_blue</color>
+    <color name="colorAccent">@color/mud_brown</color>
+
+    <color name="mud_brown">#FF5C4312</color>
+    <color name="leather">#B89207</color>
+    <color name="milk_chocolate">#715416</color>
+
+    <color name="sky">#29abe3</color>
+    <color name="sea_blue">#1071a0</color>
+    <color name="dark_blue">#313747</color>
+
+
+
 </resources>

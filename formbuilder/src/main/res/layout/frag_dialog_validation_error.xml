@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <ImageView
+        android:src="@drawable/warning_icon"
+        android:layout_marginTop="16dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/error_message_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingStart="64dp"
+        android:paddingEnd="64dp"
+        android:textColor="#000000"
+        tools:text="Please select from Date"
+         />
+
+
+    <Button
+        android:id="@+id/btn_dismiss_error_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="#29abe3"
+        android:text="ok"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

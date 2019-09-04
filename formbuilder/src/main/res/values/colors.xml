@@ -6,4 +6,22 @@
 
 
 
+
+    <color name="mud_brown">#FF5C4312</color>
+    <color name="leather">#B89207</color>
+    <color name="milk_chocolate">#715416</color>
+
+
+    <color name="gray_background">#e1e1e1</color>
+
+
+    <color name="gray_message">#13151a</color>
+
+
+    <color name="gray_title">#969696</color>
+
+    <color name="vertical_seperator">#bdbdbd</color>
+
+
+
 </resources>

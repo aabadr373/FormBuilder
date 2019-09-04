@@ -27,9 +27,9 @@ public class FormRepo {
     }
 
 
-    View buildElement(LifecycleOwner lifecycleOwner, final FormField formField, FragmentManager fragmentManager) {
+    View buildElement(LifecycleOwner lifecycleOwner, final FormField formField) {
 
-        FieldBuilderFactory fieldBuilderFactory = new FieldBuilderFactory(lifecycleOwner,context, fragmentManager);
+        FieldBuilderFactory fieldBuilderFactory = new FieldBuilderFactory(lifecycleOwner,context);
 
 
         return fieldBuilderFactory.buildField(formField);

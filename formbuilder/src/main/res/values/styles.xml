@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <style name="background_gray_rounded_padding">
+        <item name="android:padding">@dimen/views_margin</item>
+        <item name="android:clipToPadding">true</item>
+        <item name="android:background">@color/gray_background</item>
+
+    </style>
+
+
+
+
+</resources>

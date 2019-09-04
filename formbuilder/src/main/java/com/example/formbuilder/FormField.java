@@ -26,24 +26,12 @@ public class FormField {
     private boolean isEnabled;
     private String dateFormat;
     private String timeFormat;
-    private String dateTimeFormat;
     private String errorMessage;
     private LinearLayout.LayoutParams params;
-
-
-    public FormField(String tag, Type type) {
-        this.tag = tag;
-        this.type = type;
-        isEnabled = true;
-        isRequired = true;
-        dateFormat = "dd-MMM-yyyy";
-        timeFormat = "HH:mm";
-        dateTimeFormat = "ddMMyyyy HH:mm:ss";
-        options = new ArrayList<String>();
-        optionsSelected = new ArrayList<String>();
-
-    }
-
+    private boolean hasHeader;
+    private int headerIconID;
+    private int headerBackgroundID;
+    private String headerText;
 
 
     public FormField(String tag, Type type, boolean isRequired) {
@@ -51,13 +39,16 @@ public class FormField {
         this.type = type;
         isEnabled = true;
         this.isRequired = isRequired;
-        dateFormat = "ddMMyyyy";
-        timeFormat = "HH:mm:ss";
-        dateTimeFormat = "ddMMyyyy HH:mm:ss";
+        hasHeader = true;
+        dateFormat = "dd-MMM-yyyy";
+        timeFormat = "h:mm a";
         options = new ArrayList<String>();
         optionsSelected = new ArrayList<String>();
 
     }
+
+
+
 
 
 
@@ -158,14 +149,6 @@ public class FormField {
         this.timeFormat = timeFormat;
     }
 
-    public String getDateTimeFormat() {
-        return dateTimeFormat;
-    }
-
-    public void setDateTimeFormat(String dateTimeFormat) {
-        this.dateTimeFormat = dateTimeFormat;
-    }
-
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -183,6 +166,30 @@ public class FormField {
         this.params = params;
     }
 
+
+    public boolean isHasHeader() {
+        return hasHeader;
+    }
+
+    public void setHasHeader(boolean hasHeader) {
+        this.hasHeader = hasHeader;
+    }
+
+    public int getHeaderIconID() {
+        return headerIconID;
+    }
+
+    public void setHeaderIconID(int headerIconID) {
+        this.headerIconID = headerIconID;
+    }
+
+    public String getHeaderText() {
+        return headerText;
+    }
+
+    public void setHeaderText(String headerText) {
+        this.headerText = headerText;
+    }
 
     public int getCheckedValue() {
         if (optionsSelected.size() > 0) {

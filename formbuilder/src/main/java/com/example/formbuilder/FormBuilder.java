@@ -1,10 +1,13 @@
 package com.example.formbuilder;
 
+
 import android.content.Context;
 
+
 import android.view.View;
-import android.widget.EditText;
+
 import android.widget.LinearLayout;
+
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
@@ -12,46 +15,50 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 
-import java.util.ArrayList;
+import com.example.formbuilder.pickers.ValidationBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-import static com.basgeekball.awesomevalidation.ValidationStyle.COLORATION;
+import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
+
 
 public class FormBuilder {
 
     private LinearLayout linearLayout;
     private List<FormField> formFieldList;
     private LifecycleOwner lifecycleOwner;
-    private AwesomeValidation mAwesomeValidation;
+
     private int formFieldLayoutId;
-    private FragmentManager fragmentManager;
+
+
+    private ValidationBuilder validationBuilder;
 
 
     private FormRepo formRepo;
 
 
     public FormBuilder(LifecycleOwner lifecycleOwner, Context context,
-                       LinearLayout linearLayout, FragmentManager fragmentManager) {
+                       LinearLayout linearLayout, final FragmentManager fragmentManager) {
 
 
         this.linearLayout = linearLayout;
         this.formRepo = new FormRepo(context);
         formFieldList = new ArrayList<>();
 
-        this.fragmentManager = fragmentManager;
+
         this.lifecycleOwner = lifecycleOwner;
 
 
-        mAwesomeValidation = new AwesomeValidation(COLORATION);
+        validationBuilder = new ValidationBuilder(new AwesomeValidation(BASIC), fragmentManager);
 
 
     }
 
 
     public FormBuilder(LifecycleOwner lifecycleOwner, Context context,
-                       LinearLayout linearLayout, int formFieldLayoutId) {
+                       LinearLayout linearLayout,final FragmentManager fragmentManager, int formFieldLayoutId) {
 
 
         this.linearLayout = linearLayout;
@@ -61,51 +68,60 @@ public class FormBuilder {
         this.lifecycleOwner = lifecycleOwner;
 
         this.formFieldLayoutId = formFieldLayoutId;
-        mAwesomeValidation = new AwesomeValidation(COLORATION);
+        validationBuilder = new ValidationBuilder(new AwesomeValidation(BASIC), fragmentManager);
 
 
     }
 
 
-    public void addField(String tag, FormField.Type type, boolean isRequired) {
+    public void addField(String tag, FormField.Type type, String headerText, boolean isRequired) {
 
-        FormField formField = new FormField(tag, type);
+        FormField formField = new FormField(tag, type, isRequired);
 
         formField.setFieldId(formFieldLayoutId);
+        if (type == FormField.Type.TIME) {
+            formField.setFieldId(R.layout.selection_form_field);
+
+        }
+
+
+        formField.setHeaderText(headerText);
         formFieldList.add(formField);
 
 
     }
 
-    public void addField(String tag, FormField.Type type, boolean isRequired, int customField) {
+    public void addField(String tag, FormField.Type type, String headerText, boolean isRequired, int customField) {
 
-        FormField formField = new FormField(tag, type);
+        FormField formField = new FormField(tag, type, isRequired);
         formField.setFieldId(customField);
-
+        formField.setHeaderText(headerText);
         formFieldList.add(formField);
 
 
     }
 
 
-    public void addSelectionField(String tag, FormField.Type type, boolean isRequired,
-                                  List<String> options) {
+    public void addField(String tag, FormField.Type type, String headerText, boolean isRequired,
+                         List<String> options) {
 
-        FormField formField = new FormField(tag, type);
+        FormField formField = new FormField(tag, type, isRequired);
         formField.setOptions(options);
-        formField.setFieldId(formFieldLayoutId);
+        formField.setFieldId(R.layout.selection_form_field);
+        formField.setHeaderText(headerText);
         formFieldList.add(formField);
 
 
     }
 
 
-    public void addSelectionField(String tag, FormField.Type type, boolean isRequired,
-                                  List<String> options, int customField) {
+    public void addField(String tag, FormField.Type type, String headerText, boolean isRequired,
+                         List<String> options, int customField) {
 
-        FormField formField = new FormField(tag, type);
+        FormField formField = new FormField(tag, type, isRequired);
         formField.setOptions(options);
         formField.setFieldId(customField);
+        formField.setHeaderText(headerText);
         formFieldList.add(formField);
 
 
@@ -117,18 +133,13 @@ public class FormBuilder {
 
         if (formFieldList != null) {
 
-            for (FormField formField : formFieldList) {
+            for (final FormField formField : formFieldList) {
 
-                if (buildElement(formField, fragmentManager) != null) {
-                    View view = buildElement(formField, fragmentManager);
+                if (buildElement(formField) != null) {
+                    View view = buildElement(formField);
 
                     linearLayout.addView(view);
-
-                 /*   if (formField.isRequired()) {
-
-                        mAwesomeValidation.addValidation((EditText) view.findViewById(R.id.field_input), "[a-zA-Z0-9_-]+",
-                                formField.getTag().concat(" is required."));
-                    } */
+                    validationBuilder.initiate(formField, view);
 
 
                 }
@@ -143,16 +154,23 @@ public class FormBuilder {
     }
 
 
-    private View buildElement(final FormField formField, FragmentManager fragmentManager) {
+    private View buildElement(final FormField formField) {
 
 
-        return formRepo.buildElement(lifecycleOwner, formField, fragmentManager);
+        return formRepo.buildElement(lifecycleOwner, formField);
 
 
     }
 
 
     public boolean getmAwesomeValidation() {
-        return mAwesomeValidation.validate();
+        return validationBuilder.validateForm();
     }
+
+
+    public void clearErrors() {
+        validationBuilder.clearValidation();
+    }
+
+
 }

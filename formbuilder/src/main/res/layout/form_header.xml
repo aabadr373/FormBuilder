@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="8dp"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="start|center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/field_header_icon"
+        android:adjustViewBounds="true"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="start|center_vertical"
+        android:background="@drawable/circle_dark_gray"
+        android:padding="5dp"
+        android:src="@drawable/ic_reload" />
 
     <TextView
-        android:layout_gravity="center_vertical|start"
+        android:layout_marginStart="10dp"
         android:id="@+id/form_header_text"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        tools:text="icon"
+        android:gravity="start|center_vertical"
+        android:textColor="@color/gray_message"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="2dp"
+        android:layout_gravity="top"
+        android:id="@+id/is_required"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="icon"/>
+        android:textColor="#FF0000"
+        android:text="*"
+        android:layout_marginLeft="2dp" />
 
 </LinearLayout>
